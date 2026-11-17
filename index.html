@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#101b1c">
+<meta name="description" content="NEXUS — a small, real AI chat app for the browser. Bring your own free Gemini API key.">
+<title>NEXUS — Mobile</title>
+<style>
+:root{color-scheme:dark;--bg:#101819;--surface:#192526;--surface2:#202f30;--line:#304344;--text:#edf7f4;--muted:#9aadaa;--mint:#a8e6d3;--gold:#e8c982;--accent:#8dcbb9;--navbg:#142021ed;--herobg:radial-gradient(circle at 90% 5%,#456d63 0,#263f3c 32%,#1a2a2a 75%);--herotext:#c4d8d1;--switchbg:#40504f}
+html[data-theme="light"]{color-scheme:light;--bg:#eef4f2;--surface:#ffffff;--surface2:#e6efec;--line:#cfddd9;--text:#17302d;--muted:#5f7471;--mint:#1f7a5c;--accent:#1f7a5c;--navbg:#ffffffed;--herobg:radial-gradient(circle at 90% 5%,#bfe8d8 0,#8fcbb6 32%,#5da68f 75%);--herotext:#17302d;--switchbg:#c3d4cf}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:15px/1.4 system-ui,-apple-system,"Segoe UI",sans-serif;min-height:100dvh}
+button,input,select,textarea{font:inherit}button{color:inherit;border:0;cursor:pointer;background:none}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--mint);outline-offset:2px}
+.app{max-width:520px;margin:auto;min-height:100dvh;padding:env(safe-area-inset-top) 18px calc(92px + env(safe-area-inset-bottom));position:relative}
+.status{height:28px;display:flex;justify-content:space-between;align-items:center;font-size:12px;color:var(--muted);padding:0 5px}
+.top{display:flex;align-items:center;justify-content:space-between;padding:18px 2px 22px}
+.brand{display:flex;align-items:center;gap:11px}.logo{width:42px;height:42px;border-radius:15px;background:linear-gradient(145deg,#c7f0df,#6eaa9b);display:grid;place-items:center;color:#17302d;font-weight:900;font-size:20px;box-shadow:0 5px 20px #83cbb333}
+.brand strong{font-size:17px;letter-spacing:2px}.brand small{display:block;color:var(--muted);font-size:11px;letter-spacing:.4px}
+.avatar{width:39px;height:39px;border-radius:50%;background:#34494a;display:grid;place-items:center;color:var(--mint);font-weight:700}
+.page{display:none;animation:in .22s ease}.page.active{display:block}@keyframes in{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:none}}
+.eyebrow{color:var(--mint);font-size:11px;font-weight:700;letter-spacing:1.7px;text-transform:uppercase}
+h1{font-size:29px;line-height:1.15;letter-spacing:-.8px;margin:8px 0 8px}p{color:var(--muted);margin:0}
+.hero{padding:23px;border-radius:28px;background:var(--herobg);border:1px solid #47615b;position:relative;overflow:hidden;margin:12px 0 22px}
+.hero:after{content:"✳";position:absolute;right:12px;top:5px;font-size:105px;color:#c7f0df17}
+.hero h2{font-size:24px;margin:9px 0 8px;max-width:250px}.hero p{max-width:260px;color:var(--herotext);font-size:13px}
+.primary{background:var(--mint);color:#14302a;padding:12px 17px;border-radius:15px;font-weight:750;margin-top:18px}
+.section-head{display:flex;justify-content:space-between;align-items:center;margin:22px 2px 12px}.section-head b{font-size:16px}.section-head span{font-size:12px;color:var(--muted)}
+.section-head button{font-size:12px;color:var(--mint);padding:4px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:11px}.tile{background:var(--surface);border:1px solid var(--line);border-radius:21px;padding:16px;min-height:126px;text-align:left;transition:.18s;width:100%}.tile:active,.nav button:active{transform:scale(.97)}.tile .ico{width:36px;height:36px;border-radius:13px;background:#2b4140;display:grid;place-items:center;font-size:18px;margin-bottom:13px;color:var(--mint)}html[data-theme="light"] .tile .ico{background:#e0efe9}.tile b{display:block;font-size:14px}.tile small{color:var(--muted);font-size:11px}
+.wide{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:15px;display:flex;align-items:center;gap:12px;margin-top:11px;width:100%;text-align:left}.wide .ico{width:36px;height:36px;border-radius:13px;background:#2b4140;display:grid;place-items:center;font-size:18px;color:var(--mint);flex:none}html[data-theme="light"] .wide .ico{background:#e0efe9}.wide div:nth-child(2){flex:1}.wide small{color:var(--muted)}
+.chatbox{background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:13px;display:flex;gap:8px;margin-top:18px}.chatbox input{flex:1;min-width:0;background:transparent;border:0;outline:0;color:var(--text);padding:8px}.send{width:42px;height:42px;border-radius:14px;background:var(--mint);color:#14302a;font-weight:900;flex:none}
+.send:disabled{opacity:.5;cursor:wait}
+.message{padding:13px 15px;border-radius:17px;background:var(--surface2);margin:12px 0;max-width:88%;font-size:14px;white-space:pre-wrap;word-wrap:break-word}.message.user{margin-left:auto;background:#34564e;color:#edf7f4}html[data-theme="light"] .message.user{background:#cde7db;color:#17302d}.message.typing{color:var(--muted);font-style:italic}
+.muted-card{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:17px;margin-top:12px}
+.setting{display:flex;align-items:center;justify-content:space-between;padding:15px 0;border-bottom:1px solid var(--line);gap:12px}.setting:last-child{border:0}.setting small{display:block;color:var(--muted);font-size:12px}
+.switch{width:46px;height:27px;border-radius:20px;background:var(--switchbg);padding:3px;flex:none}.switch:after{content:"";display:block;width:21px;height:21px;border-radius:50%;background:#d4e0db;transition:.2s}.switch[aria-checked="true"]{background:#699f8d}.switch[aria-checked="true"]:after{transform:translateX(19px);background:#eafff6}
+.nav{position:fixed;z-index:5;bottom:0;left:50%;transform:translateX(-50%);width:min(520px,100%);padding:10px 15px calc(12px + env(safe-area-inset-bottom));background:var(--navbg);backdrop-filter:blur(18px);border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(4,1fr);gap:4px}
+.nav button{background:transparent;color:#8fa5a0;border-radius:17px;padding:8px 3px 6px;font-size:10px;display:grid;justify-items:center;gap:4px}.nav button span{font-size:19px}.nav button.active{background:#2a403b;color:var(--mint)}html[data-theme="light"] .nav button.active{background:#d9ece4}
+.toast{position:fixed;bottom:100px;left:50%;transform:translateX(-50%);background:#e5f5ed;color:#19332d;padding:10px 16px;border-radius:20px;font-size:13px;opacity:0;pointer-events:none;transition:.2s;max-width:90vw;text-align:center;z-index:9}.toast.show{opacity:1}
+.field{width:100%;background:var(--surface2);border:1px solid var(--line);border-radius:14px;color:var(--text);padding:12px;margin-top:10px}
+.btnrow{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}.btn{background:var(--mint);color:#14302a;padding:10px 15px;border-radius:13px;font-weight:700;font-size:13px}.btn.ghost{background:var(--surface2);color:var(--text);border:1px solid var(--line)}.btn.danger{background:#5a3232;color:#ffd9d9}
+.keystatus{font-size:12px;margin-top:10px;color:var(--muted)}.keystatus.ok{color:var(--mint)}.keystatus.err{color:#ff9c9c}
+.banner{background:#3a3220;border:1px solid #6b5a2a;color:#ffe9a8;border-radius:16px;padding:12px 14px;font-size:13px;margin-top:14px;display:none}.banner.show{display:flex;justify-content:space-between;align-items:center;gap:10px}.banner button{color:#ffe9a8;font-weight:700;text-decoration:underline;flex:none}
+html[data-theme="light"] .banner{background:#fff4cf;border-color:#d9bd62;color:#5c4a08}html[data-theme="light"] .banner button{color:#5c4a08}
+.noteitem{display:flex;gap:10px;align-items:flex-start;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:13px;margin-top:10px}.noteitem p{flex:1;color:var(--text);white-space:pre-wrap;word-wrap:break-word}.noteitem button{color:#ff9c9c;font-size:16px;padding:2px 6px}
+.smallbtn{font-size:12px;color:var(--muted);text-decoration:underline;padding:4px}
+a{color:var(--mint)}
+@media(min-width:600px){body{padding:18px 0}.app{border:1px solid var(--line);border-radius:32px;min-height:calc(100dvh - 36px);overflow:hidden}.nav{bottom:18px;border-radius:0 0 32px 32px}}
+</style>
+</head>
+<body>
+<div class="app">
+ <div class="status"><span id="clock">9:41</span><span aria-hidden="true">● ● ▰ ▴</span></div>
+ <header class="top"><div class="brand"><div class="logo">N</div><div><strong>NEXUS</strong><small>YOUR SMART SPACE</small></div></div><div class="avatar" title="You">M</div></header>
+
+ <main>
+  <section class="page active" id="home">
+   <div class="eyebrow" id="dateLine">YOUR SPACE</div><h1><span id="greeting">Good evening.</span><br>What’s on your mind?</h1><p>A calmer, smarter place to get things done.</p>
+   <div class="hero"><div class="eyebrow">NEXUS AI</div><h2>Your ideas,<br>in motion.</h2><p>Ask anything, explore ideas, or pick up where you left off.</p><button class="primary" data-goto="assistant">Start a conversation ↗</button></div>
+   <div class="section-head"><b>Quick actions</b><span>Made for you</span></div>
+   <div class="grid">
+    <button class="tile" data-goto="assistant"><span class="ico">✦</span><b>Ask Nexus</b><small>Get quick answers</small></button>
+    <button class="tile" data-goto="notes"><span class="ico">▤</span><b>My notes</b><small>Keep ideas together</small></button>
+    <button class="tile" data-goto="explore"><span class="ico">◈</span><b>Discover</b><small>Find something new</small></button>
+    <button class="tile" data-goto="settings"><span class="ico">⚙</span><b>Customize</b><small>Make it yours</small></button>
+   </div>
+   <div class="section-head"><b>Recently used</b><button data-goto="explore">View all</button></div>
+   <div id="recentList"></div>
+  </section>
+
+  <section class="page" id="assistant">
+   <div class="eyebrow">NEXUS AI</div><h1>Ask away.</h1><p>Real AI replies — powered by your own Gemini key.</p>
+   <div class="banner" id="keyBanner"><span>No API key yet. Add your free Gemini key to start chatting.</span><button data-goto="settings">Add key</button></div>
+   <div class="muted-card" id="messages" aria-live="polite"></div>
+   <div style="text-align:right"><button class="smallbtn" id="clearChat">Clear chat</button></div>
+   <form class="chatbox" id="chatForm"><input id="prompt" placeholder="Message Nexus..." autocomplete="off" aria-label="Message Nexus"><button class="send" id="sendBtn" type="submit" aria-label="Send">↑</button></form>
+   <div class="section-head"><b>Try asking</b></div>
+   <div class="grid"><button class="tile" data-ask="Give me one creative idea I can start today, in 3 short points"><span class="ico">💡</span><b>Creative ideas</b><small>Think of something new</small></button><button class="tile" data-ask="Help me plan my day: ask me nothing, just give a simple morning-to-night plan"><span class="ico">☀</span><b>Plan my day</b><small>Make a simple plan</small></button></div>
+  </section>
+
+  <section class="page" id="explore">
+   <div class="eyebrow">EXPLORE</div><h1>A little inspiration.</h1><p>Tap one — Nexus will start the conversation for you.</p>
+   <button class="wide" data-ask="I want to create something with AI. Give me 3 beginner-friendly project ideas with first steps"><span class="ico">✧</span><div><b>AI Studio</b><br><small>Ideas, writing and creativity</small></div><span>›</span></button>
+   <button class="wide" data-ask="Give me a simple daily focus routine: one main goal, three small steps, no fluff"><span class="ico">◉</span><div><b>Daily focus</b><br><small>Small steps, clear mind</small></div><span>›</span></button>
+   <button class="wide" data-ask="Tell me 5 useful keyboard / phone shortcuts most people don't know, in a short list"><span class="ico">⌘</span><div><b>Tools &amp; shortcuts</b><br><small>Your everyday toolkit</small></div><span>›</span></button>
+  </section>
+
+  <section class="page" id="notes">
+   <div class="eyebrow">MY NOTES</div><h1>Keep ideas together.</h1><p>Notes stay in this browser only.</p>
+   <textarea class="field" id="noteText" rows="3" placeholder="Write a note..." aria-label="Write a note"></textarea>
+   <div class="btnrow"><button class="btn" id="addNote">Add note</button></div>
+   <div id="notesList"></div>
+  </section>
+
+  <section class="page" id="settings">
+   <div class="eyebrow">PREFERENCES</div><h1>Make it yours.</h1><p>Simple controls that actually work.</p>
+
+   <div class="muted-card">
+    <b>Your Gemini API key</b>
+    <p style="font-size:12px;margin-top:5px">Free key from <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">Google AI Studio</a>. Your key is saved <b>only in this browser</b> (localStorage) — it is never in this app's code and never sent anywhere except Google's Gemini API.</p>
+    <input class="field" id="apiKey" type="password" placeholder="Paste your Gemini API key" autocomplete="off" aria-label="Gemini API key">
+    <select class="field" id="modelSel" aria-label="Model">
+     <option value="gemini-3.5-flash-lite">gemini-3.5-flash-lite — fast, free-tier friendly</option>
+     <option value="gemini-3.5-flash">gemini-3.5-flash — smarter, slower</option>
+    </select>
+    <div class="btnrow"><button class="btn" id="saveKey">Save key</button><button class="btn ghost" id="testKey">Test key</button><button class="btn danger" id="removeKey">Remove</button></div>
+    <div class="keystatus" id="keyStatus">No key saved yet.</div>
+   </div>
+
+   <div class="muted-card">
+    <div class="setting"><div><b>Dark appearance</b><small>Comfortable low-light UI</small></div><button class="switch" id="swDark" role="switch" aria-checked="true" aria-label="Dark appearance"></button></div>
+    <div class="setting"><div><b>Haptic feedback</b><small>Small vibration on taps (mobile)</small></div><button class="switch" id="swHaptic" role="switch" aria-checked="false" aria-label="Haptic feedback"></button></div>
+    <div class="setting"><div><b>Notifications</b><small>Allow this page to notify you</small></div><button class="switch" id="swNotif" role="switch" aria-checked="false" aria-label="Notifications"></button></div>
+   </div>
+   <div class="muted-card"><b>NEXUS Mobile</b><p style="font-size:12px;margin-top:5px">Working version · v1.0 · Bring-your-own-key. No key, no fake replies.</p></div>
+  </section>
+ </main>
+ <nav class="nav">
+  <button class="active" data-page="home" data-goto="home"><span>⌂</span>Home</button>
+  <button data-page="assistant" data-goto="assistant"><span>✦</span>Assistant</button>
+  <button data-page="explore" data-goto="explore"><span>◈</span>Explore</button>
+  <button data-page="settings" data-goto="settings"><span>⚙</span>Settings</button>
+ </nav>
+ <div class="toast" id="toast" role="status"></div>
+</div>
+<script>
+"use strict";
+const $=id=>document.getElementById(id);
+const store={
+ get(k,d){try{const v=localStorage.getItem("nexus_"+k);return v===null?d:JSON.parse(v)}catch(e){return d}},
+ set(k,v){try{localStorage.setItem("nexus_"+k,JSON.stringify(v))}catch(e){}}
+};
+let settings=Object.assign({dark:true,haptics:false,notifs:false},store.get("settings",{}));
+let chat=store.get("chat",[]);           // [{who:'user'|'bot',text}]
+let notes=store.get("notes",[]);         // [text]
+let busy=false;
+
+/* ---------- navigation ---------- */
+function showPage(id){
+ document.querySelectorAll('.page').forEach(p=>p.classList.toggle('active',p.id===id));
+ document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.page===id));
+ window.scrollTo({top:0,behavior:'smooth'});
+ buzz();
+}
+function buzz(){if(settings.haptics&&navigator.vibrate)navigator.vibrate(10)}
+document.querySelectorAll('[data-goto]').forEach(el=>el.addEventListener('click',()=>showPage(el.dataset.goto)));
+
+/* ---------- toast ---------- */
+function toast(msg){const t=$('toast');t.textContent=msg;t.classList.add('show');clearTimeout(window._tt);window._tt=setTimeout(()=>t.classList.remove('show'),2200)}
+
+/* ---------- clock, date, greeting (live, not hard-coded) ---------- */
+function updateClockAndGreeting(){
+ const d=new Date();
+ $('clock').textContent=d.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
+ const day=d.toLocaleDateString([], {weekday:'long'}).toUpperCase();
+ const date=d.toLocaleDateString([], {day:'numeric',month:'short'});
+ $('dateLine').textContent=day+" · "+date+" · YOUR SPACE";
+ const h=d.getHours();
+ $('greeting').textContent=h<12?"Good morning.":h<17?"Good afternoon.":"Good evening.";
+}
+updateClockAndGreeting();setInterval(updateClockAndGreeting,30000);
+
+/* ---------- chat ---------- */
+function addMessage(text,who,save=true){
+ const el=document.createElement('div');
+ el.className='message '+(who==='user'?'user':'');
+ el.textContent=text;
+ $('messages').appendChild(el);
+ el.scrollIntoView({behavior:'smooth',block:'nearest'});
+ if(save){chat.push({who,text});if(chat.length>60)chat=chat.slice(-60);store.set("chat",chat);renderRecent()}
+ return el;
+}
+function renderChat(){
+ $('messages').innerHTML='';
+ if(!chat.length){addMessage("Hey! I'm Nexus. Add your free Gemini key in Settings once, then ask me anything.",'bot',false);return}
+ chat.forEach(m=>{const el=document.createElement('div');el.className='message '+(m.who==='user'?'user':'');el.textContent=m.text;$('messages').appendChild(el)});
+}
+function renderRecent(){
+ const box=$('recentList');box.innerHTML='';
+ const lastUser=[...chat].reverse().find(m=>m.who==='user');
+ const btn=document.createElement('button');btn.className='wide';
+ btn.innerHTML='<span class="ico">✧</span><div><b></b><br><small></small></div><span>›</span>';
+ btn.querySelector('b').textContent=lastUser?lastUser.text.slice(0,60):'Welcome to NEXUS';
+ btn.querySelector('small').textContent=lastUser?'Continue your last conversation':'Your working app is ready to explore';
+ btn.addEventListener('click',()=>showPage('assistant'));
+ box.appendChild(btn);
+}
+function keyState(){
+ const key=store.get("key","");
+ $('keyBanner').classList.toggle('show',!key);
+ const st=$('keyStatus');
+ if(key){st.textContent="Key saved in this browser ✓  Model: "+store.get("model","gemini-3.5-flash-lite");st.className="keystatus ok"}
+ else{st.textContent="No key saved yet.";st.className="keystatus"}
+}
+async function askGemini(userText){
+ const key=store.get("key",""),model=store.get("model","gemini-3.5-flash-lite");
+ // chat already contains the latest user message (added by sendMessage)
+ const history=chat.slice(-20).map(m=>({role:m.who==='user'?'user':'model',parts:[{text:m.text}]}));
+ if(!history.length||history[history.length-1].role!=='user')history.push({role:'user',parts:[{text:userText}]});
+ const res=await fetch("https://generativelanguage.googleapis.com/v1beta/models/"+encodeURIComponent(model)+":generateContent",{
+  method:"POST",
+  headers:{"Content-Type":"application/json","x-goog-api-key":key},
+  body:JSON.stringify({
+   system_instruction:{parts:[{text:"You are Nexus, a friendly, concise AI assistant inside a small mobile web app. Answer helpfully in the user's language. Keep answers clear and not overly long unless asked."}]},
+   contents:history,
+   generationConfig:{temperature:0.7,maxOutputTokens:1024}
+  })
+ });
+ const data=await res.json().catch(()=>({}));
+ if(!res.ok){
+   const msg=(data.error&&data.error.message)||("HTTP "+res.status);
+   if(res.status===429)throw new Error("Free limit khatam ho gayi hai (429). Thodi der baad try karo, ya dusri key/model use karo.");
+   if(res.status===400&&/API key/i.test(msg))throw new Error("Key galat lag rahi hai. Settings me sahi Gemini key daalo.");
+   if(res.status===403)throw new Error("Key se access nahi mila (403). AI Studio me key check karo.");
+   throw new Error("Gemini error: "+msg);
+ }
+ const parts=(data.candidates&&data.candidates[0]&&data.candidates[0].content&&data.candidates[0].content.parts)||[];
+ const text=parts.map(p=>p.text||"").join("").trim();
+ if(!text)throw new Error("Gemini ne khali jawab diya. Phir try karo.");
+ return text;
+}
+async function sendMessage(e){
+ if(e)e.preventDefault();
+ if(busy)return;
+ const input=$('prompt');const value=input.value.trim();if(!value)return;
+ addMessage(value,'user');input.value='';
+ if(!store.get("key","")){
+   addMessage("Pehle apni free Gemini key Settings me daalo — bina key ke mai nakli jawab nahi dunga. Upar 'Add key' se 30 second me ho jayega.",'bot');
+   $('keyBanner').classList.add('show');return;
+ }
+ busy=true;$('sendBtn').disabled=true;
+ const typing=addMessage("Nexus is working…",'bot',false);typing.classList.add('typing');
+ try{const reply=await askGemini(value);typing.remove();addMessage(reply,'bot')}
+ catch(err){typing.remove();addMessage("⚠ "+err.message,'bot')}
+ busy=false;$('sendBtn').disabled=false;$('prompt').focus();
+}
+$('chatForm').addEventListener('submit',sendMessage);
+function quickAsk(text){showPage('assistant');$('prompt').value=text;sendMessage()}
+document.querySelectorAll('[data-ask]').forEach(el=>el.addEventListener('click',()=>quickAsk(el.dataset.ask)));
+$('clearChat').addEventListener('click',()=>{chat=[];store.set("chat",chat);renderChat();renderRecent();toast('Chat cleared')});
+
+/* ---------- notes ---------- */
+function renderNotes(){
+ const box=$('notesList');box.innerHTML='';
+ if(!notes.length){box.innerHTML='<p style="margin-top:14px">No notes yet.</p>';return}
+ notes.forEach((n,i)=>{
+  const d=document.createElement('div');d.className='noteitem';
+  const p=document.createElement('p');p.textContent=n;
+  const del=document.createElement('button');del.textContent='✕';del.setAttribute('aria-label','Delete note');
+  del.addEventListener('click',()=>{notes.splice(i,1);store.set("notes",notes);renderNotes();toast('Note deleted')});
+  d.appendChild(p);d.appendChild(del);box.appendChild(d);
+ });
+}
+$('addNote').addEventListener('click',()=>{
+ const v=$('noteText').value.trim();if(!v)return;
+ notes.unshift(v);store.set("notes",notes);$('noteText').value='';renderNotes();toast('Note saved');buzz();
+});
+
+/* ---------- settings: key ---------- */
+$('modelSel').value=store.get("model","gemini-3.5-flash-lite");
+$('modelSel').addEventListener('change',()=>{store.set("model",$('modelSel').value);keyState()});
+$('saveKey').addEventListener('click',()=>{
+ const v=$('apiKey').value.trim();
+ if(!v){toast('Pehle key paste karo');return}
+ store.set("key",v);store.set("model",$('modelSel').value);$('apiKey').value='';
+ keyState();toast('Key saved — sirf is browser me');buzz();
+});
+$('removeKey').addEventListener('click',()=>{store.set("key","");keyState();toast('Key removed from this browser')});
+$('testKey').addEventListener('click',async()=>{
+ const v=$('apiKey').value.trim()||store.get("key","");
+ if(!v){toast('Pehle key daalo ya save karo');return}
+ const st=$('keyStatus');st.textContent="Testing…";st.className="keystatus";
+ try{
+  const res=await fetch("https://generativelanguage.googleapis.com/v1beta/models/"+encodeURIComponent($('modelSel').value)+":generateContent",{method:"POST",headers:{"Content-Type":"application/json","x-goog-api-key":v},body:JSON.stringify({contents:[{role:'user',parts:[{text:'Say OK'}]}],generationConfig:{maxOutputTokens:16}})});
+  if(!res.ok)throw new Error("HTTP "+res.status);
+  st.textContent="Key works ✓  Gemini replied.";st.className="keystatus ok";
+ }catch(err){st.textContent="Key test failed: "+err.message;st.className="keystatus err"}
+});
+
+/* ---------- settings: real switches ---------- */
+function applySettings(){
+ document.documentElement.dataset.theme=settings.dark?"dark":"light";
+ document.querySelector('meta[name="theme-color"]').content=settings.dark?"#101b1c":"#eef4f2";
+ const map={swDark:settings.dark,swHaptic:settings.haptics,swNotif:settings.notifs};
+ for(const id in map)$(id).setAttribute('aria-checked',String(!!map[id]));
+}
+function bindSwitch(id,fn){$(id).addEventListener('click',()=>{fn();store.set("settings",settings);applySettings();buzz()})}
+bindSwitch('swDark',()=>{settings.dark=!settings.dark;toast(settings.dark?'Dark appearance on':'Light appearance on')});
+bindSwitch('swHaptic',()=>{settings.haptics=!settings.haptics;toast('Haptics '+(settings.haptics?'on':'off'))});
+bindSwitch('swNotif',async()=>{
+ if(!settings.notifs&&"Notification"in window){
+   const p=await Notification.requestPermission().catch(()=> "denied");
+   if(p!=="granted"){toast('Notification permission nahi mili');return}
+ }
+ settings.notifs=!settings.notifs;toast('Notifications '+(settings.notifs?'on':'off'));
+});
+
+/* ---------- init ---------- */
+renderChat();renderRecent();renderNotes();keyState();applySettings();
+</script>
+</body></html>

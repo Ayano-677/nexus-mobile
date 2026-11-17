@@ -1,0 +1,11 @@
+# Never commit secrets
+.env
+.env.*
+*.key
+secrets.*
+
+# OS / editor noise
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
